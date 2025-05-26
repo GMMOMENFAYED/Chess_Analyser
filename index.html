@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>لوحة شطرنج</title>
+    <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        #board {
+            width: 400px;
+            margin: 20px auto;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>لوحة شطرنج</h1>
+    <div id="board"></div>
+    <br>
+    <textarea id="pgnInput" placeholder="أدخل PGN هنا"></textarea>
+    <br><br>
+    <button onclick="loadPGN()">عرض الدور</button>
+
+    <script src="https://unpkg.com/chess.js@0.10.2/chess.min.js"></script>
+    <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script>
+        var board = null;
+        var game = new Chess();
+
+        function loadPGN() {
+            const pgn = document.getElementById('pgnInput').value;
+            game.load_pgn(pgn);
+            const history = game.history();
+            game.reset();
+            board.position(game.fen());
+
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i >= history.length) {
+                    clearInterval(interval);
+                    return;
+                }
+                game.move(history[i]);
+                board.position(game.fen());
+                i++;
+            }, 800);
+        }
+
+        board = Chessboard('board', {
+            position: 'start',
+            draggable: false
+        });
+    </script>
+
+</body>
+</html>
