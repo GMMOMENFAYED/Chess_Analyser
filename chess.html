@@ -1,56 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>موقع تحليل شطرنج - PGN</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.css">
-  <style>
-    body { font-family: Arial; text-align: center; margin-top: 50px; }
-    #board { width: 400px; margin: 20px auto; }
-  </style>
-</head>
-<body>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>لوحة الشطرنج</title>
+    <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <style>
+      #board {
+        width: 350px;
+        margin: 20px auto;
+      }
+    </style>
+  </head>
+  <body>
 
-  <h1>اعرض دور PGN</h1>
-  <input type="file" id="pgnFile" accept=".pgn"><br><br>
-  <div id="board"></div>
+    <h2 style="text-align:center;">لوحة شطرنج تفاعلية</h2>
+    <div id="board"></div>
 
-  <script>
-    const board = Chessboard('board', {
-      draggable: true,
-      position: 'start'
-    });
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script>
+      const board = Chessboard('board', {
+        draggable: true,
+        position: 'start'
+      });
+    </script>
 
-    const game = new Chess();
-
-    document.getElementById('pgnFile').addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = function (event) {
-        const pgn = event.target.result;
-        game.load_pgn(pgn);
-
-        const moves = game.history();
-        game.reset();
-
-        let i = 0;
-        const interval = setInterval(() => {
-          if (i >= moves.length) {
-            clearInterval(interval);
-            return;
-          }
-          game.move(moves[i]);
-          board.position(game.fen());
-          i++;
-        }, 1000);
-      };
-
-      reader.readAsText(file);
-    });
-  </script>
-
-</body>
-</html>
+  </body>
+  </html>
